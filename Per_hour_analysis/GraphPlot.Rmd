@@ -1,0 +1,88 @@
+---
+title: "NYC_Taxi"
+author: "Fenil"
+date: "May 1, 2016"
+output: pdf_document
+---
+
+NYC_Taxi_data<-read.csv(file.choose(),header=T,sep=',')
+View(NYC_Taxi_data)
+
+NYC_Taxi_data$Hour=as.numeric(NYC_Taxi_data$Hour)
+NYC_Taxi_data$Count=as.numeric(NYC_Taxi_data$Count)
+NYC_Taxi_data$Borough=as.character(NYC_Taxi_data$Borough)
+NYC_Taxi_data$Taxi_type=as.character(NYC_Taxi_data$Taxi_type)
+
+NYC_Taxi_data_Manhattany<-data.frame(hour=character(),borough=character(),taxi_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Manhattan" && NYC_Taxi_data[i,3]=="y")
+    {
+      NYC_Taxi_data_Manhattany=rbind(NYC_Taxi_data_Manhattany,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattang<-data.frame(hour=character(),borough=character(),taxi_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Manhattan" && NYC_Taxi_data[i,3]=="g")
+    {
+      NYC_Taxi_data_Manhattang=rbind(NYC_Taxi_data_Manhattang,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattany<-NYC_Taxi_data_Manhattany[order(NYC_Taxi_data_Manhattany$Hour),]
+NYC_Taxi_data_Manhattang<-NYC_Taxi_data_Manhattang[order(NYC_Taxi_data_Manhattang$Hour),]
+
+library(ggplot2)
+p1<-ggplot(data=NYC_Taxi_data_Manhattany, aes(x=Hour, y=Count, group=1)) +
+  geom_line(color="yellow")+geom_point()
+
+#plot(NYC_Taxi_data_Manhattany$Hour,NYC_Taxi_data_Manhattany$Count,type="l",col="yellow")
+#lines(NYC_Taxi_data_Manhattang$Hour,NYC_Taxi_data_Manhattang$Count,type="l",col="green")
+  
+p2<-ggplot(data=NYC_Taxi_data_Manhattang, aes(x=Hour, y=Count, group=1)) +
+  geom_line(color="green")+geom_point()
+
+#lines(x,y2,col="green")
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+multiplot(p1, p2,cols=1)
+
+
+
+#link--http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+
