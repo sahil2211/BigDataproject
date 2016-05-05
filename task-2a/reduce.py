@@ -54,8 +54,8 @@ for line in sys.stdin:
                 if(current_key):
                          print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue_y, total_revenue_g, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
                 current_key = key
-                total_amount_y = total_amount_y
-                total_amount_g = total_amount_g
+                total_revenue_y = total_amount_y
+                total_revenue_g = total_amount_g
                 if(len(values) == 9):
                         t_max = values[0]
                         t_min = values[1]
