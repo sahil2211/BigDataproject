@@ -3,7 +3,8 @@
 import sys
 
 current_key = None
-total_revenue = 0
+total_revenue_y = 0
+total_revenue_g = 0
 t_max = ''
 t_min = ''
 t_avg = ''
@@ -18,17 +19,27 @@ for line in sys.stdin:
 	line = line.strip()
 	key, value = line.split('\t')
 	values = value.split(',')
-	total_amount = 0
-	
+	taxi_type = ''
+	if len(values) == 2:
+                taxi_type = values[1]
+	total_amount_y = 0
+	total_amount_g = 0
+
 	try:
-                if(len(values) == 1):
-                        total_amount = float(value)
+                if(len(values) == 2):
+                        if taxi_type == "y":
+                                total_amount_y = float(values[0])
+                        elif taxi_type == "g":
+                                total_amount_g = float(values[0])
 	except ValueError:
 		continue
 	
 	if (key == current_key):
-                if(len(values) == 1):
-                        total_revenue += total_amount
+                if(len(values) == 2):
+                        if taxi_type == "y":
+                                total_revenue_y += total_amount_y
+                        elif taxi_type == "g":
+                                total_revenue_g += total_amount_g
                 elif(len(values) == 9):
                         t_max = values[0]
                         t_min = values[1]
@@ -41,9 +52,10 @@ for line in sys.stdin:
                         avg_speed = values[8]
 	else:
                 if(current_key):
-                         print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
+                         print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue_y, total_revenue_g, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
                 current_key = key
-                total_revenue = total_amount
+                total_amount_y = total_amount_y
+                total_amount_g = total_amount_g
                 if(len(values) == 9):
                         t_max = values[0]
                         t_min = values[1]
@@ -55,4 +67,4 @@ for line in sys.stdin:
                         precip_total = values[7]
                         avg_speed = values[8]
 
-print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
+print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue_y, total_revenue_g, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
