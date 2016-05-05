@@ -44,14 +44,15 @@ for line in sys.stdin:
                          print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
                 current_key = key
                 total_revenue = total_amount
-                t_max = values[0]
-                t_min = values[1]
-                t_avg = values[2]
-                weather_type = values[3]
-                depth = values[4]
-                waterl = values[5]
-                snowfall = values[6]
-                precip_total = values[7]
-                avg_speed = values[8]
+                if(len(values) == 9):
+                        t_max = values[0]
+                        t_min = values[1]
+                        t_avg = values[2]
+                        weather_type = values[3]
+                        depth = values[4]
+                        waterl = values[5]
+                        snowfall = values[6]
+                        precip_total = values[7]
+                        avg_speed = values[8]
 
 print(("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s") % (current_key, total_revenue, t_max, t_min, t_avg, weather_type, depth, waterl, snowfall, precip_total, avg_speed))
