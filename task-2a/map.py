@@ -11,7 +11,7 @@ for line in sys.stdin:
         year_month_day = datetime.strptime(tpep_pickup_datetime, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
         total_amount = line[18]
         print(("%s\t%s,y") % (year_month_day, total_amount))
-    elif len(line) == 23:
+    elif len(line) == 21:
         lpep_pickup_datetime = line[1]
         year_month_day = datetime.strptime(lpep_pickup_datetime, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
         total_amount = line[18]
