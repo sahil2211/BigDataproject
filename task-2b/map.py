@@ -22,7 +22,7 @@ for line in sys.stdin:
             pickup_date = datetime.strptime(pickup_datetime, '%m/%d/%Y %H:%M:%S').strftime('%Y-%m-%d')
             print(("%s\t%d,u") % (pickup_date, 1))
             
-    elif len(line) == 21 or len(line) == 23:
+    elif len(line) == 21 or len(line) == 22 or len(line) == 23:
         lpep_pickup_datetime = line[1]
         year_month_day = datetime.strptime(lpep_pickup_datetime, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
         #total_amount = line[18]
