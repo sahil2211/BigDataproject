@@ -1,0 +1,136 @@
+00,Bronx,u,weekend,5786	
+00,Brooklyn,u,weekday,46111	
+00,Manhattan,u,weekday,156570	
+00,Queens,u,weekend,32198	
+00,Staten Island,u,weekday,69	
+01,Bronx,u,weekday,2365	
+01,Brooklyn,u,weekend,67452	
+01,Manhattan,u,weekend,227485	
+01,Queens,u,weekday,16647	
+01,Staten Island,u,weekend,128	
+02,Bronx,u,weekend,3485	
+02,Brooklyn,u,weekday,16968	
+02,Manhattan,u,weekday,57211	
+02,Queens,u,weekend,13514	
+02,Staten Island,u,weekday,53	
+03,Bronx,u,weekday,1525	
+03,Brooklyn,u,weekend,33531	
+03,Manhattan,u,weekend,108252	
+03,Queens,u,weekday,6602	
+03,Staten Island,u,weekend,61	
+04,Bronx,u,weekend,2343	
+04,Brooklyn,u,weekday,20225	
+04,EWR,u,weekday,3	
+04,Manhattan,u,weekday,66482	
+04,Queens,u,weekend,11136	
+04,Staten Island,u,weekday,85	
+05,Bronx,u,weekday,2641	
+05,Brooklyn,u,weekend,23997	
+05,EWR,u,weekend,3	
+05,Manhattan,u,weekend,66358	
+05,Queens,u,weekday,20824	
+05,Staten Island,u,weekend,44	
+06,Bronx,u,weekend,2491	
+06,Brooklyn,u,weekday,51156	
+06,EWR,u,weekday,9	
+06,Manhattan,u,weekday,199252	
+06,Queens,u,weekend,18370	
+06,Staten Island,u,weekday,184	
+07,Bronx,u,weekday,7133	
+07,Brooklyn,u,weekend,35074	
+07,EWR,u,weekend,1	
+07,Manhattan,u,weekend,122340	
+07,Queens,u,weekday,40025	
+07,Staten Island,u,weekend,88	
+08,Bronx,u,weekend,4347	
+08,Brooklyn,u,weekday,74381	
+08,EWR,u,weekday,4	
+08,Manhattan,u,weekday,401972	
+08,Queens,u,weekend,22997	
+08,Staten Island,u,weekday,242	
+09,Bronx,u,weekday,6122	
+09,Brooklyn,u,weekend,49435	
+09,EWR,u,weekend,1	
+09,Manhattan,u,weekend,183769	
+09,Queens,u,weekday,40734	
+09,Staten Island,u,weekend,137	
+10,Bronx,u,weekday,4997	
+10,Brooklyn,u,weekend,52702	
+10,Manhattan,u,weekend,195134	
+10,Queens,u,weekday,37389	
+10,Staten Island,u,weekend,146	
+11,Bronx,u,weekend,4753	
+11,Brooklyn,u,weekday,50428	
+11,EWR,u,weekday,6	
+11,Manhattan,u,weekday,274193	
+11,Queens,u,weekend,28547	
+11,Staten Island,u,weekday,169	
+12,Bronx,u,weekday,5018	
+12,Brooklyn,u,weekend,56239	
+12,EWR,u,weekend,1	
+12,Manhattan,u,weekend,233859	
+12,Queens,u,weekday,32721	
+12,Staten Island,u,weekend,199	
+13,Bronx,u,weekend,5531	
+13,Brooklyn,u,weekday,45833	
+13,EWR,u,weekday,4	
+13,Manhattan,u,weekday,289206	
+13,Queens,u,weekend,32402	
+13,Staten Island,u,weekday,176	
+14,Bronx,u,weekday,6161	
+14,Brooklyn,u,weekend,60854	
+14,EWR,u,weekend,2	
+14,Manhattan,u,weekend,263672	
+14,Queens,u,weekday,42279	
+14,Staten Island,u,weekend,206	
+15,Bronx,u,weekend,6577	
+15,Brooklyn,u,weekday,48984	
+15,EWR,u,weekday,10	
+15,Manhattan,u,weekday,395474	
+15,Queens,u,weekend,43517	
+15,Staten Island,u,weekday,218	
+16,Bronx,u,weekday,6988	
+16,Brooklyn,u,weekend,65662	
+16,EWR,u,weekend,1	
+16,Manhattan,u,weekend,342844	
+16,Queens,u,weekday,46871	
+16,Staten Island,u,weekend,253	
+17,Bronx,u,weekend,6793	
+17,Brooklyn,u,weekday,61123	
+17,EWR,u,weekday,4	
+17,Manhattan,u,weekday,556674	
+17,Queens,u,weekend,43963	
+17,Staten Island,u,weekday,220	
+18,Bronx,u,weekday,7064	
+18,Brooklyn,u,weekend,81343	
+18,EWR,u,weekend,2	
+18,Manhattan,u,weekend,409948	
+18,Queens,u,weekday,51641	
+18,Staten Island,u,weekend,286	
+19,Bronx,u,weekend,6882	
+19,Brooklyn,u,weekday,78081	
+19,EWR,u,weekday,1	
+19,Manhattan,u,weekday,588225	
+19,Queens,u,weekend,47623	
+19,Staten Island,u,weekday,179	
+20,Bronx,u,weekend,7048	
+20,Brooklyn,u,weekday,78234	
+20,EWR,u,weekday,1	
+20,Manhattan,u,weekday,552608	
+20,Queens,u,weekend,48333	
+20,Staten Island,u,weekday,147	
+21,Bronx,u,weekday,7218	
+21,Brooklyn,u,weekend,89865	
+21,Manhattan,u,weekend,361685	
+21,Queens,u,weekday,56148	
+21,Staten Island,u,weekend,222	
+22,Bronx,u,weekend,7987	
+22,Brooklyn,u,weekday,81309	
+22,Manhattan,u,weekday,467102	
+22,Queens,u,weekend,51732	
+22,Staten Island,u,weekday,118	
+23,Bronx,u,weekday,4832	
+23,Brooklyn,u,weekend,93982	
+23,Manhattan,u,weekend,362600	
+23,Queens,u,weekday,46402	
+23,Staten Island,u,weekend,174	

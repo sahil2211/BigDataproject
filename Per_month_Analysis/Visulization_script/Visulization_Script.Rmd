@@ -1,0 +1,1173 @@
+---
+title: "Project_Big_Data_Visulization"
+author: "Fenil"
+date: "May 1, 2016"
+output: pdf_document
+---
+
+NYC_Taxi_data<-read.csv(file.choose(),header=T,sep=',')
+View(NYC_Taxi_data)
+
+Uber_Data<-read.csv(file.choose(),header=T,sep=',')
+View(Uber_Data)
+
+NYC_Taxi_data$Hour=as.numeric(NYC_Taxi_data$Hour)
+NYC_Taxi_data$Count=as.numeric(NYC_Taxi_data$Count)
+NYC_Taxi_data$Borough=as.character(NYC_Taxi_data$Borough)
+NYC_Taxi_data$Taxi_type=as.character(NYC_Taxi_data$Taxi_type)
+NYC_Taxi_data$Day_Type=as.character(NYC_Taxi_data$Day_Type)
+
+Uber_Data$Hour=as.numeric(Uber_Data$Hour)
+Uber_Data$Count=as.numeric(Uber_Data$Count)
+Uber_Data$Borough=as.character(Uber_Data$Borough)
+Uber_Data$Taxi_type=as.character(Uber_Data$Taxi_type)
+Uber_Data$Day_Type=as.character(Uber_Data$Day_Type)
+
+NYC_Taxi_data_Manhattanywd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanywe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Manhattan" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekday") 
+    {
+      NYC_Taxi_data_Manhattanywd=rbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Manhattan" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekend") 
+    {
+      NYC_Taxi_data_Manhattanywe=rbind(NYC_Taxi_data_Manhattanywe,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattangwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+NYC_Taxi_data_Manhattangwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Manhattan" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattangwd=rbind(NYC_Taxi_data_Manhattangwd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Manhattan" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattangwe=rbind(NYC_Taxi_data_Manhattangwe,NYC_Taxi_data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanuwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanuwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(Uber_Data$Count)))
+{
+  if(Uber_Data[i,2]=="Manhattan"&& Uber_Data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattanuwd=rbind(NYC_Taxi_data_Manhattanuwd,Uber_Data[i,])
+    }
+  else if(Uber_Data[i,2]=="Manhattan" && Uber_Data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattanuwe=rbind(NYC_Taxi_data_Manhattanuwe,Uber_Data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanywd<-NYC_Taxi_data_Manhattanywd[order(NYC_Taxi_data_Manhattanywd$Hour),]
+NYC_Taxi_data_Manhattangwd<-NYC_Taxi_data_Manhattangwd[order(NYC_Taxi_data_Manhattangwd$Hour),]
+NYC_Taxi_data_Manhattanuwd<-NYC_Taxi_data_Manhattanuwd[order(NYC_Taxi_data_Manhattanuwd$Hour),]
+NYC_Taxi_data_Manhattanywe<-NYC_Taxi_data_Manhattanywe[order(NYC_Taxi_data_Manhattanywe$Hour),]
+NYC_Taxi_data_Manhattangwe<-NYC_Taxi_data_Manhattangwe[order(NYC_Taxi_data_Manhattangwe$Hour),]
+NYC_Taxi_data_Manhattanuwe<-NYC_Taxi_data_Manhattanuwe[order(NYC_Taxi_data_Manhattanuwe$Hour),]
+
+
+Manhanttanframe<-cbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data_Manhattanywe,NYC_Taxi_data_Manhattangwd,NYC_Taxi_data_Manhattangwe,
+NYC_Taxi_data_Manhattanuwd,NYC_Taxi_data_Manhattanuwe)
+
+finalframe<-data.frame(Manhanttanframe[,c(1,5,10,15,20,25,30)])
+
+colnames(finalframe)<-c("hour","cntywd","cntywe","cntgwd","cntgwe","cntuwd","cntuwe")
+
+
+library(ggplot2)
+#p1<-ggplot(data=NYC_Taxi_data_Manhattanywd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="yellow")+geom_point()
+  
+p11<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywd,color="Yellow_Taxi")) + geom_point(aes(y=cntywd))+
+  geom_line(aes(y=cntgwd,color="Green_Taxi"))+geom_point(aes(y=cntgwd))+
+  geom_line(aes(y=cntuwd,color="Uber"))+geom_point(aes(y=cntuwd))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Manhattan_Weekdays_Count")
+
+
+#plot(NYC_Taxi_data_Manhattany$Hour,NYC_Taxi_data_Manhattany$Count,type="l",col="yellow")
+#lines(NYC_Taxi_data_Manhattang$Hour,NYC_Taxi_data_Manhattang$Count,type="l",col="green")
+  
+#p2<-ggplot(data=NYC_Taxi_data_Manhattangwd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="green")+geom_point()
+
+#legend(2000,9.5,c("Weekday","Weekend"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","green"))
+
+
+
+  
+
+p22<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywe,color="Yellow_Taxi")) +geom_point(aes(y=cntywe))+ 
+  geom_line(aes(y=cntgwe,color="Green_Taxi"))+geom_point(aes(y=cntgwe))+
+  geom_line(aes(y=cntuwe,color="Uber"))+geom_point(aes(y=cntuwe))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Manhattan_Weekends_Count")
+
+#lines(x,y2,col="green")
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+multiplot(p11, p22,cols=1)
+
+
+#------------For queens----------------
+
+NYC_Taxi_data_Manhattanywd=NULL
+NYC_Taxi_data_Manhattanywe=NULL
+NYC_Taxi_data_Manhattangwd=NULL
+NYC_Taxi_data_Manhattangwe=NULL
+NYC_Taxi_data_Manhattanuwd=NULL
+NYC_Taxi_data_Manhattanuwe=NULL
+
+NYC_Taxi_data_Manhattanywd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanywe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Queens" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekday") 
+    {
+      NYC_Taxi_data_Manhattanywd=rbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Queens" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekend") 
+    {
+      NYC_Taxi_data_Manhattanywe=rbind(NYC_Taxi_data_Manhattanywe,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattangwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+NYC_Taxi_data_Manhattangwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Queens" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattangwd=rbind(NYC_Taxi_data_Manhattangwd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Queens" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattangwe=rbind(NYC_Taxi_data_Manhattangwe,NYC_Taxi_data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanuwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanuwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(Uber_Data$Count)))
+{
+  if(Uber_Data[i,2]=="Queens"&& Uber_Data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattanuwd=rbind(NYC_Taxi_data_Manhattanuwd,Uber_Data[i,])
+    }
+  else if(Uber_Data[i,2]=="Queens" && Uber_Data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattanuwe=rbind(NYC_Taxi_data_Manhattanuwe,Uber_Data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanywd<-NYC_Taxi_data_Manhattanywd[order(NYC_Taxi_data_Manhattanywd$Hour),]
+NYC_Taxi_data_Manhattangwd<-NYC_Taxi_data_Manhattangwd[order(NYC_Taxi_data_Manhattangwd$Hour),]
+NYC_Taxi_data_Manhattanuwd<-NYC_Taxi_data_Manhattanuwd[order(NYC_Taxi_data_Manhattanuwd$Hour),]
+NYC_Taxi_data_Manhattanywe<-NYC_Taxi_data_Manhattanywe[order(NYC_Taxi_data_Manhattanywe$Hour),]
+NYC_Taxi_data_Manhattangwe<-NYC_Taxi_data_Manhattangwe[order(NYC_Taxi_data_Manhattangwe$Hour),]
+NYC_Taxi_data_Manhattanuwe<-NYC_Taxi_data_Manhattanuwe[order(NYC_Taxi_data_Manhattanuwe$Hour),]
+
+
+Manhanttanframe<-cbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data_Manhattanywe,NYC_Taxi_data_Manhattangwd,NYC_Taxi_data_Manhattangwe,
+NYC_Taxi_data_Manhattanuwd,NYC_Taxi_data_Manhattanuwe)
+
+finalframe<-data.frame(Manhanttanframe[,c(1,5,10,15,20,25,30)])
+
+colnames(finalframe)<-c("hour","cntywd","cntywe","cntgwd","cntgwe","cntuwd","cntuwe")
+
+
+library(ggplot2)
+#p1<-ggplot(data=NYC_Taxi_data_Manhattanywd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="yellow")+geom_point()
+  
+p11<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywd,color="Yellow_Taxi")) + geom_point(aes(y=cntywd))+
+  geom_line(aes(y=cntgwd,color="Green_Taxi"))+geom_point(aes(y=cntgwd))+
+  geom_line(aes(y=cntuwd,color="Uber"))+geom_point(aes(y=cntuwd))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Queens_Weekdays_Count")
+
+
+#plot(NYC_Taxi_data_Manhattany$Hour,NYC_Taxi_data_Manhattany$Count,type="l",col="yellow")
+#lines(NYC_Taxi_data_Manhattang$Hour,NYC_Taxi_data_Manhattang$Count,type="l",col="green")
+  
+#p2<-ggplot(data=NYC_Taxi_data_Manhattangwd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="green")+geom_point()
+
+#legend(2000,9.5,c("Weekday","Weekend"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","green"))
+
+
+
+  
+
+p22<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywe,color="Yellow_Taxi")) +geom_point(aes(y=cntywe))+ 
+  geom_line(aes(y=cntgwe,color="Green_Taxi"))+geom_point(aes(y=cntgwe))+
+  geom_line(aes(y=cntuwe,color="Uber"))+geom_point(aes(y=cntuwe))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Queens_Weekends_Count")
+
+#lines(x,y2,col="green")
+
+
+multiplot(p11, p22,cols=1)
+
+#-----------------For Bronx----------------------
+
+NYC_Taxi_data_Manhattanywd=NULL
+NYC_Taxi_data_Manhattanywe=NULL
+NYC_Taxi_data_Manhattangwd=NULL
+NYC_Taxi_data_Manhattangwe=NULL
+NYC_Taxi_data_Manhattanuwd=NULL
+NYC_Taxi_data_Manhattanuwe=NULL
+
+NYC_Taxi_data_Manhattanywd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanywe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Bronx" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekday") 
+    {
+      NYC_Taxi_data_Manhattanywd=rbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Bronx" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekend") 
+    {
+      NYC_Taxi_data_Manhattanywe=rbind(NYC_Taxi_data_Manhattanywe,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattangwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+NYC_Taxi_data_Manhattangwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Bronx" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattangwd=rbind(NYC_Taxi_data_Manhattangwd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Bronx" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattangwe=rbind(NYC_Taxi_data_Manhattangwe,NYC_Taxi_data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanuwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanuwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(Uber_Data$Count)))
+{
+  if(Uber_Data[i,2]=="Bronx"&& Uber_Data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattanuwd=rbind(NYC_Taxi_data_Manhattanuwd,Uber_Data[i,])
+    }
+  else if(Uber_Data[i,2]=="Bronx" && Uber_Data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattanuwe=rbind(NYC_Taxi_data_Manhattanuwe,Uber_Data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanywd<-NYC_Taxi_data_Manhattanywd[order(NYC_Taxi_data_Manhattanywd$Hour),]
+NYC_Taxi_data_Manhattangwd<-NYC_Taxi_data_Manhattangwd[order(NYC_Taxi_data_Manhattangwd$Hour),]
+NYC_Taxi_data_Manhattanuwd<-NYC_Taxi_data_Manhattanuwd[order(NYC_Taxi_data_Manhattanuwd$Hour),]
+NYC_Taxi_data_Manhattanywe<-NYC_Taxi_data_Manhattanywe[order(NYC_Taxi_data_Manhattanywe$Hour),]
+NYC_Taxi_data_Manhattangwe<-NYC_Taxi_data_Manhattangwe[order(NYC_Taxi_data_Manhattangwe$Hour),]
+NYC_Taxi_data_Manhattanuwe<-NYC_Taxi_data_Manhattanuwe[order(NYC_Taxi_data_Manhattanuwe$Hour),]
+
+
+Manhanttanframe<-cbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data_Manhattanywe,NYC_Taxi_data_Manhattangwd,NYC_Taxi_data_Manhattangwe,
+NYC_Taxi_data_Manhattanuwd,NYC_Taxi_data_Manhattanuwe)
+
+finalframe<-data.frame(Manhanttanframe[,c(1,5,10,15,20,25,30)])
+
+colnames(finalframe)<-c("hour","cntywd","cntywe","cntgwd","cntgwe","cntuwd","cntuwe")
+
+
+library(ggplot2)
+#p1<-ggplot(data=NYC_Taxi_data_Manhattanywd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="yellow")+geom_point()
+  
+p11<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywd,color="Yellow_Taxi")) + geom_point(aes(y=cntywd))+
+  geom_line(aes(y=cntgwd,color="Green_Taxi"))+geom_point(aes(y=cntgwd))+
+  geom_line(aes(y=cntuwd,color="Uber"))+geom_point(aes(y=cntuwd))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Bronx_Weekdays_Count")
+
+
+#plot(NYC_Taxi_data_Manhattany$Hour,NYC_Taxi_data_Manhattany$Count,type="l",col="yellow")
+#lines(NYC_Taxi_data_Manhattang$Hour,NYC_Taxi_data_Manhattang$Count,type="l",col="green")
+  
+#p2<-ggplot(data=NYC_Taxi_data_Manhattangwd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="green")+geom_point()
+
+#legend(2000,9.5,c("Weekday","Weekend"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","green"))
+
+
+
+  
+
+p22<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywe,color="Yellow_Taxi")) +geom_point(aes(y=cntywe))+ 
+  geom_line(aes(y=cntgwe,color="Green_Taxi"))+geom_point(aes(y=cntgwe))+
+  geom_line(aes(y=cntuwe,color="Uber"))+geom_point(aes(y=cntuwe))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Bronx_Weekends_Count")
+
+#lines(x,y2,col="green")
+
+
+multiplot(p11, p22,cols=1)
+
+#----------------------For Brooklyn---------------------
+
+NYC_Taxi_data_Manhattanywd=NULL
+NYC_Taxi_data_Manhattanywe=NULL
+NYC_Taxi_data_Manhattangwd=NULL
+NYC_Taxi_data_Manhattangwe=NULL
+NYC_Taxi_data_Manhattanuwd=NULL
+NYC_Taxi_data_Manhattanuwe=NULL
+
+NYC_Taxi_data_Manhattanywd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanywe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Brooklyn" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekday") 
+    {
+      NYC_Taxi_data_Manhattanywd=rbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Brooklyn" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekend") 
+    {
+      NYC_Taxi_data_Manhattanywe=rbind(NYC_Taxi_data_Manhattanywe,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattangwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+NYC_Taxi_data_Manhattangwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Brooklyn" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattangwd=rbind(NYC_Taxi_data_Manhattangwd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Brooklyn" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattangwe=rbind(NYC_Taxi_data_Manhattangwe,NYC_Taxi_data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanuwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanuwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(Uber_Data$Count)))
+{
+  if(Uber_Data[i,2]=="Brooklyn"&& Uber_Data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattanuwd=rbind(NYC_Taxi_data_Manhattanuwd,Uber_Data[i,])
+    }
+  else if(Uber_Data[i,2]=="Brooklyn" && Uber_Data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattanuwe=rbind(NYC_Taxi_data_Manhattanuwe,Uber_Data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanywd<-NYC_Taxi_data_Manhattanywd[order(NYC_Taxi_data_Manhattanywd$Hour),]
+NYC_Taxi_data_Manhattangwd<-NYC_Taxi_data_Manhattangwd[order(NYC_Taxi_data_Manhattangwd$Hour),]
+NYC_Taxi_data_Manhattanuwd<-NYC_Taxi_data_Manhattanuwd[order(NYC_Taxi_data_Manhattanuwd$Hour),]
+NYC_Taxi_data_Manhattanywe<-NYC_Taxi_data_Manhattanywe[order(NYC_Taxi_data_Manhattanywe$Hour),]
+NYC_Taxi_data_Manhattangwe<-NYC_Taxi_data_Manhattangwe[order(NYC_Taxi_data_Manhattangwe$Hour),]
+NYC_Taxi_data_Manhattanuwe<-NYC_Taxi_data_Manhattanuwe[order(NYC_Taxi_data_Manhattanuwe$Hour),]
+
+
+Manhanttanframe<-cbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data_Manhattanywe,NYC_Taxi_data_Manhattangwd,NYC_Taxi_data_Manhattangwe,
+NYC_Taxi_data_Manhattanuwd,NYC_Taxi_data_Manhattanuwe)
+
+finalframe<-data.frame(Manhanttanframe[,c(1,5,10,15,20,25,30)])
+
+colnames(finalframe)<-c("hour","cntywd","cntywe","cntgwd","cntgwe","cntuwd","cntuwe")
+
+
+library(ggplot2)
+#p1<-ggplot(data=NYC_Taxi_data_Manhattanywd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="yellow")+geom_point()
+  
+p11<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywd,color="Yellow_Taxi")) + geom_point(aes(y=cntywd))+
+  geom_line(aes(y=cntgwd,color="Green_Taxi"))+geom_point(aes(y=cntgwd))+
+  geom_line(aes(y=cntuwd,color="Uber"))+geom_point(aes(y=cntuwd))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Brooklyn_Weekdays_Count")
+
+
+#plot(NYC_Taxi_data_Manhattany$Hour,NYC_Taxi_data_Manhattany$Count,type="l",col="yellow")
+#lines(NYC_Taxi_data_Manhattang$Hour,NYC_Taxi_data_Manhattang$Count,type="l",col="green")
+  
+#p2<-ggplot(data=NYC_Taxi_data_Manhattangwd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="green")+geom_point()
+
+#legend(2000,9.5,c("Weekday","Weekend"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","green"))
+
+
+
+  
+
+p22<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywe,color="Yellow_Taxi")) +geom_point(aes(y=cntywe))+ 
+  geom_line(aes(y=cntgwe,color="Green_Taxi"))+geom_point(aes(y=cntgwe))+
+  geom_line(aes(y=cntuwe,color="Uber"))+geom_point(aes(y=cntuwe))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Brooklyn_Weekends_Count")
+
+#lines(x,y2,col="green")
+
+
+multiplot(p11, p22,cols=1)
+#-------------------Staten_Island---------------
+
+NYC_Taxi_data_Manhattanywd=NULL
+NYC_Taxi_data_Manhattanywe=NULL
+NYC_Taxi_data_Manhattangwd=NULL
+NYC_Taxi_data_Manhattangwe=NULL
+NYC_Taxi_data_Manhattanuwd=NULL
+NYC_Taxi_data_Manhattanuwe=NULL
+
+NYC_Taxi_data_Manhattanywd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanywe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Staten Island" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekday") 
+    {
+      NYC_Taxi_data_Manhattanywd=rbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Staten Island" && NYC_Taxi_data[i,3]=="y" && NYC_Taxi_data[i,4]=="weekend") 
+    {
+      NYC_Taxi_data_Manhattanywe=rbind(NYC_Taxi_data_Manhattanywe,NYC_Taxi_data[i,])
+    }
+}
+NYC_Taxi_data_Manhattangwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+NYC_Taxi_data_Manhattangwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+for(i in (1:length(NYC_Taxi_data$Count)))
+{
+  if(NYC_Taxi_data[i,2]=="Staten Island" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattangwd=rbind(NYC_Taxi_data_Manhattangwd,NYC_Taxi_data[i,])
+    }
+  else if(NYC_Taxi_data[i,2]=="Staten Island" && NYC_Taxi_data[i,3]=="g" && NYC_Taxi_data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattangwe=rbind(NYC_Taxi_data_Manhattangwe,NYC_Taxi_data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanuwd<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+NYC_Taxi_data_Manhattanuwe<-data.frame(hour=character(),borough=character(),taxi_type=character(),day_type=character(),count=numeric())
+
+for(i in (1:length(Uber_Data$Count)))
+{
+  if(Uber_Data[i,2]=="Staten Island"&& Uber_Data[i,4]=="weekday")
+    {
+      NYC_Taxi_data_Manhattanuwd=rbind(NYC_Taxi_data_Manhattanuwd,Uber_Data[i,])
+    }
+  else if(Uber_Data[i,2]=="Staten Island" && Uber_Data[i,4]=="weekend")
+    {
+      NYC_Taxi_data_Manhattanuwe=rbind(NYC_Taxi_data_Manhattanuwe,Uber_Data[i,])
+    }
+}
+
+NYC_Taxi_data_Manhattanywd<-NYC_Taxi_data_Manhattanywd[order(NYC_Taxi_data_Manhattanywd$Hour),]
+NYC_Taxi_data_Manhattangwd<-NYC_Taxi_data_Manhattangwd[order(NYC_Taxi_data_Manhattangwd$Hour),]
+NYC_Taxi_data_Manhattanuwd<-NYC_Taxi_data_Manhattanuwd[order(NYC_Taxi_data_Manhattanuwd$Hour),]
+NYC_Taxi_data_Manhattanywe<-NYC_Taxi_data_Manhattanywe[order(NYC_Taxi_data_Manhattanywe$Hour),]
+NYC_Taxi_data_Manhattangwe<-NYC_Taxi_data_Manhattangwe[order(NYC_Taxi_data_Manhattangwe$Hour),]
+NYC_Taxi_data_Manhattanuwe<-NYC_Taxi_data_Manhattanuwe[order(NYC_Taxi_data_Manhattanuwe$Hour),]
+
+
+Manhanttanframe<-cbind(NYC_Taxi_data_Manhattanywd,NYC_Taxi_data_Manhattanywe,NYC_Taxi_data_Manhattangwd,NYC_Taxi_data_Manhattangwe,
+NYC_Taxi_data_Manhattanuwd,NYC_Taxi_data_Manhattanuwe)
+
+finalframe<-data.frame(Manhanttanframe[,c(1,5,10,15,20,25,30)])
+
+colnames(finalframe)<-c("hour","cntywd","cntywe","cntgwd","cntgwe","cntuwd","cntuwe")
+
+
+library(ggplot2)
+#p1<-ggplot(data=NYC_Taxi_data_Manhattanywd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="yellow")+geom_point()
+  
+p11<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywd,color="Yellow_Taxi")) + geom_point(aes(y=cntywd))+
+  geom_line(aes(y=cntgwd,color="Green_Taxi"))+geom_point(aes(y=cntgwd))+
+  geom_line(aes(y=cntuwd,color="Uber"))+geom_point(aes(y=cntuwd))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Staten Island_Weekdays_Count")
+
+
+#plot(NYC_Taxi_data_Manhattany$Hour,NYC_Taxi_data_Manhattany$Count,type="l",col="yellow")
+#lines(NYC_Taxi_data_Manhattang$Hour,NYC_Taxi_data_Manhattang$Count,type="l",col="green")
+  
+#p2<-ggplot(data=NYC_Taxi_data_Manhattangwd, aes(x=Hour, y=Count, group=1)) +
+#  geom_line(color="green")+geom_point()
+
+#legend(2000,9.5,c("Weekday","Weekend"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","green"))
+
+
+
+  
+
+p22<-ggplot(finalframe, aes(x=hour)) +                   
+  geom_line(aes(y=cntywe,color="Yellow_Taxi")) +geom_point(aes(y=cntywe))+ 
+  geom_line(aes(y=cntgwe,color="Green_Taxi"))+geom_point(aes(y=cntgwe))+
+  geom_line(aes(y=cntuwe,color="Uber"))+geom_point(aes(y=cntuwe))+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Hour",y="Staten Island_Weekends_Count")
+
+#lines(x,y2,col="green")
+
+
+multiplot(p11, p22,cols=1)
+
+#------------------
+
+
+
+
+
+#link--http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
+
+
+#-----------Per Month_Per Borough------
+
+NYC_Month_Data<-read.csv(file.choose(),header=T,sep=',')
+#NYC_Month_Data1<-NYC_Month_Data
+#NYC_Month_Data<-NYC_Month_Data1
+
+NYC_Mon_GY<-read.csv(file.choose(),header=T,sep=',')
+
+
+
+
+NYC_Month_Data$Count=as.numeric(NYC_Month_Data$Count)
+NYC_Month_Data$Borough=as.character(NYC_Month_Data$Borough)
+NYC_Month_Data$Taxi_type=as.character(NYC_Month_Data$Taxi_type)
+NYC_Month_Data$Month=as.character(NYC_Month_Data$Month)
+
+NYC_Mon_GY$Count=as.numeric(NYC_Mon_GY$Count)
+NYC_Mon_GY$Borough=as.character(NYC_Mon_GY$Borough)
+NYC_Mon_GY$Taxi_type=as.character(NYC_Mon_GY$Taxi_type)
+NYC_Mon_GY$Month=as.character(NYC_Mon_GY$Month)
+
+
+#---------For Queens-------------------
+
+NYC_Taxi_data_Manhattan_mon<-NULL
+NYC_Taxi_data_Manhattan_mon<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+
+for(i in (1:length(NYC_Month_Data$Count)))
+{
+  if(NYC_Month_Data[i,2]=="Queens") 
+    {
+      NYC_Taxi_data_Manhattan_mon=rbind(NYC_Taxi_data_Manhattan_mon,NYC_Month_Data[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon<-NYC_Taxi_data_Manhattan_mon[order(NYC_Taxi_data_Manhattan_mon$Month),]
+
+
+
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-10","Queens","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-11","Queens","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-12","Queens","u",NA)
+
+NYC_Taxi_data_Manhattan_mon$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon$Count=as.numeric(NYC_Taxi_data_Manhattan_mon$Count)
+
+#month1 <-format(NYC_Taxi_data_Manhattan_mon$Month, "%m/%Y")
+
+#---yellow---
+
+NYC_Taxi_data_Manhattan_mon_y<-NULL
+NYC_Taxi_data_Manhattan_mon_y<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Queens" && NYC_Mon_GY[i,3]=="y") 
+    {
+      NYC_Taxi_data_Manhattan_mon_y=rbind(NYC_Taxi_data_Manhattan_mon_y,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_y<-NYC_Taxi_data_Manhattan_mon_y[order(NYC_Taxi_data_Manhattan_mon_y$Month),]
+
+NYC_Taxi_data_Manhattan_mon_y$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_y$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_y$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_y$Count)
+
+
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+#------green-----
+
+NYC_Taxi_data_Manhattan_mon_g<-NULL
+NYC_Taxi_data_Manhattan_mon_g<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Queens" && NYC_Mon_GY[i,3]=="g") 
+    {
+      NYC_Taxi_data_Manhattan_mon_g=rbind(NYC_Taxi_data_Manhattan_mon_g,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_g<-NYC_Taxi_data_Manhattan_mon_g[order(NYC_Taxi_data_Manhattan_mon_g$Month),]
+
+NYC_Taxi_data_Manhattan_mon_g$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_g$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_g$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_g$Count)
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+
+#NYC_Taxi_data_Manhattan_mon$grp <- factor(rep(1:2, c(6,6)))
+#g <- ggplot(NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) + geom_line(aes(group = grp))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))  
+     
+     
+finalframe1<-cbind(NYC_Taxi_data_Manhattan_mon,NYC_Taxi_data_Manhattan_mon_g,NYC_Taxi_data_Manhattan_mon_y)
+
+
+
+finalframe2<-data.frame(finalframe1[,c(1,4,8,12)])
+
+colnames(finalframe2)<-c("Month","cntu","cntg","cnty")
+
+     
+
+#g1 <-ggplot()+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) +
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon$Month,y=NYC_Taxi_data_Manhattan_mon$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_g$Month,y=NYC_Taxi_data_Manhattan_mon_g$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_y$Month,y=NYC_Taxi_data_Manhattan_mon_y$Count))
+
+
+
+g22<-ggplot(finalframe2, aes(x=Month)) +                   
+  geom_line(aes(y=cnty,color="Yellow_Taxi")) +geom_point(aes(y=cnty))+ 
+  geom_line(aes(y=cntg,color="Green_Taxi"))+geom_point(aes(y=cntg))+
+  geom_line(aes(y=cntu,color="Uber"),na.rm=T)+geom_point(aes(y=cntu),na.rm=T)+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Month(04-2014 To 06-2015)",y="Queens_Count")
+
+
+
+#--------------For Manhattan----------------------
+
+NYC_Taxi_data_Manhattan_mon<-NULL
+NYC_Taxi_data_Manhattan_mon<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+
+for(i in (1:length(NYC_Month_Data$Count)))
+{
+  if(NYC_Month_Data[i,2]=="Manhattan") 
+    {
+      NYC_Taxi_data_Manhattan_mon=rbind(NYC_Taxi_data_Manhattan_mon,NYC_Month_Data[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon<-NYC_Taxi_data_Manhattan_mon[order(NYC_Taxi_data_Manhattan_mon$Month),]
+
+
+
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-10","Manhattan","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-11","Manhattan","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-12","Manhattan","u",NA)
+
+NYC_Taxi_data_Manhattan_mon$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon$Count=as.numeric(NYC_Taxi_data_Manhattan_mon$Count)
+
+#month1 <-format(NYC_Taxi_data_Manhattan_mon$Month, "%m/%Y")
+
+#---yellow---
+
+NYC_Taxi_data_Manhattan_mon_y<-NULL
+NYC_Taxi_data_Manhattan_mon_y<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Manhattan" && NYC_Mon_GY[i,3]=="y") 
+    {
+      NYC_Taxi_data_Manhattan_mon_y=rbind(NYC_Taxi_data_Manhattan_mon_y,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_y<-NYC_Taxi_data_Manhattan_mon_y[order(NYC_Taxi_data_Manhattan_mon_y$Month),]
+
+NYC_Taxi_data_Manhattan_mon_y$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_y$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_y$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_y$Count)
+
+
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+#------green-----
+
+NYC_Taxi_data_Manhattan_mon_g<-NULL
+NYC_Taxi_data_Manhattan_mon_g<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Manhattan" && NYC_Mon_GY[i,3]=="g") 
+    {
+      NYC_Taxi_data_Manhattan_mon_g=rbind(NYC_Taxi_data_Manhattan_mon_g,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_g<-NYC_Taxi_data_Manhattan_mon_g[order(NYC_Taxi_data_Manhattan_mon_g$Month),]
+
+NYC_Taxi_data_Manhattan_mon_g$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_g$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_g$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_g$Count)
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+
+#NYC_Taxi_data_Manhattan_mon$grp <- factor(rep(1:2, c(6,6)))
+#g <- ggplot(NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) + geom_line(aes(group = grp))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))  
+     
+     
+finalframe1<-cbind(NYC_Taxi_data_Manhattan_mon,NYC_Taxi_data_Manhattan_mon_g,NYC_Taxi_data_Manhattan_mon_y)
+
+
+
+finalframe2<-data.frame(finalframe1[,c(1,4,8,12)])
+
+colnames(finalframe2)<-c("Month","cntu","cntg","cnty")
+
+     
+
+#g1 <-ggplot()+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) +
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon$Month,y=NYC_Taxi_data_Manhattan_mon$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_g$Month,y=NYC_Taxi_data_Manhattan_mon_g$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_y$Month,y=NYC_Taxi_data_Manhattan_mon_y$Count))
+
+
+
+g22<-ggplot(finalframe2, aes(x=Month)) +                   
+  geom_line(aes(y=cnty,color="Yellow_Taxi")) +geom_point(aes(y=cnty))+ 
+  geom_line(aes(y=cntg,color="Green_Taxi"))+geom_point(aes(y=cntg))+
+  geom_line(aes(y=cntu,color="Uber"),na.rm=T)+geom_point(aes(y=cntu),na.rm=T)+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Month(04-2014 To 06-2015)",y="Manhattan_Count")
+  
+#-------------------------------------For Bronx-----------------------
+
+NYC_Taxi_data_Manhattan_mon<-NULL
+NYC_Taxi_data_Manhattan_mon<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+
+for(i in (1:length(NYC_Month_Data$Count)))
+{
+  if(NYC_Month_Data[i,2]=="Bronx") 
+    {
+      NYC_Taxi_data_Manhattan_mon=rbind(NYC_Taxi_data_Manhattan_mon,NYC_Month_Data[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon<-NYC_Taxi_data_Manhattan_mon[order(NYC_Taxi_data_Manhattan_mon$Month),]
+
+
+
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-10","Bronx","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-11","Bronx","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-12","Bronx","u",NA)
+
+NYC_Taxi_data_Manhattan_mon$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon$Count=as.numeric(NYC_Taxi_data_Manhattan_mon$Count)
+
+#month1 <-format(NYC_Taxi_data_Manhattan_mon$Month, "%m/%Y")
+
+#---yellow---
+
+NYC_Taxi_data_Manhattan_mon_y<-NULL
+NYC_Taxi_data_Manhattan_mon_y<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Bronx" && NYC_Mon_GY[i,3]=="y") 
+    {
+      NYC_Taxi_data_Manhattan_mon_y=rbind(NYC_Taxi_data_Manhattan_mon_y,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_y<-NYC_Taxi_data_Manhattan_mon_y[order(NYC_Taxi_data_Manhattan_mon_y$Month),]
+
+NYC_Taxi_data_Manhattan_mon_y$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_y$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_y$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_y$Count)
+
+
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+#------green-----
+
+NYC_Taxi_data_Manhattan_mon_g<-NULL
+NYC_Taxi_data_Manhattan_mon_g<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Bronx" && NYC_Mon_GY[i,3]=="g") 
+    {
+      NYC_Taxi_data_Manhattan_mon_g=rbind(NYC_Taxi_data_Manhattan_mon_g,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_g<-NYC_Taxi_data_Manhattan_mon_g[order(NYC_Taxi_data_Manhattan_mon_g$Month),]
+
+NYC_Taxi_data_Manhattan_mon_g$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_g$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_g$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_g$Count)
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+
+#NYC_Taxi_data_Manhattan_mon$grp <- factor(rep(1:2, c(6,6)))
+#g <- ggplot(NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) + geom_line(aes(group = grp))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))  
+     
+     
+finalframe1<-cbind(NYC_Taxi_data_Manhattan_mon,NYC_Taxi_data_Manhattan_mon_g,NYC_Taxi_data_Manhattan_mon_y)
+
+
+
+finalframe2<-data.frame(finalframe1[,c(1,4,8,12)])
+
+colnames(finalframe2)<-c("Month","cntu","cntg","cnty")
+
+     
+
+#g1 <-ggplot()+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) +
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon$Month,y=NYC_Taxi_data_Manhattan_mon$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_g$Month,y=NYC_Taxi_data_Manhattan_mon_g$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_y$Month,y=NYC_Taxi_data_Manhattan_mon_y$Count))
+
+
+
+g22<-ggplot(finalframe2, aes(x=Month)) +                   
+  geom_line(aes(y=cnty,color="Yellow_Taxi")) +geom_point(aes(y=cnty))+ 
+  geom_line(aes(y=cntg,color="Green_Taxi"))+geom_point(aes(y=cntg))+
+  geom_line(aes(y=cntu,color="Uber"),na.rm=T)+geom_point(aes(y=cntu),na.rm=T)+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Month(04-2014 To 06-2015)",y="Bronx_Count")
+
+#------------------------------------------------Brooklyn----------------------------------
+
+NYC_Taxi_data_Manhattan_mon<-NULL
+NYC_Taxi_data_Manhattan_mon<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+
+for(i in (1:length(NYC_Month_Data$Count)))
+{
+  if(NYC_Month_Data[i,2]=="Brooklyn") 
+    {
+      NYC_Taxi_data_Manhattan_mon=rbind(NYC_Taxi_data_Manhattan_mon,NYC_Month_Data[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon<-NYC_Taxi_data_Manhattan_mon[order(NYC_Taxi_data_Manhattan_mon$Month),]
+
+
+
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-10","Brooklyn","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-11","Brooklyn","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-12","Brooklyn","u",NA)
+
+NYC_Taxi_data_Manhattan_mon$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon$Count=as.numeric(NYC_Taxi_data_Manhattan_mon$Count)
+
+#month1 <-format(NYC_Taxi_data_Manhattan_mon$Month, "%m/%Y")
+
+#---yellow---
+
+NYC_Taxi_data_Manhattan_mon_y<-NULL
+NYC_Taxi_data_Manhattan_mon_y<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Brooklyn" && NYC_Mon_GY[i,3]=="y") 
+    {
+      NYC_Taxi_data_Manhattan_mon_y=rbind(NYC_Taxi_data_Manhattan_mon_y,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_y<-NYC_Taxi_data_Manhattan_mon_y[order(NYC_Taxi_data_Manhattan_mon_y$Month),]
+
+NYC_Taxi_data_Manhattan_mon_y$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_y$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_y$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_y$Count)
+
+
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+#------green-----
+
+NYC_Taxi_data_Manhattan_mon_g<-NULL
+NYC_Taxi_data_Manhattan_mon_g<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Brooklyn" && NYC_Mon_GY[i,3]=="g") 
+    {
+      NYC_Taxi_data_Manhattan_mon_g=rbind(NYC_Taxi_data_Manhattan_mon_g,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_g<-NYC_Taxi_data_Manhattan_mon_g[order(NYC_Taxi_data_Manhattan_mon_g$Month),]
+
+NYC_Taxi_data_Manhattan_mon_g$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_g$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_g$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_g$Count)
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+
+#NYC_Taxi_data_Manhattan_mon$grp <- factor(rep(1:2, c(6,6)))
+#g <- ggplot(NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) + geom_line(aes(group = grp))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))  
+     
+     
+finalframe1<-cbind(NYC_Taxi_data_Manhattan_mon,NYC_Taxi_data_Manhattan_mon_g,NYC_Taxi_data_Manhattan_mon_y)
+
+
+
+finalframe2<-data.frame(finalframe1[,c(1,4,8,12)])
+
+colnames(finalframe2)<-c("Month","cntu","cntg","cnty")
+
+     
+
+#g1 <-ggplot()+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) +
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon$Month,y=NYC_Taxi_data_Manhattan_mon$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_g$Month,y=NYC_Taxi_data_Manhattan_mon_g$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_y$Month,y=NYC_Taxi_data_Manhattan_mon_y$Count))
+
+
+
+g22<-ggplot(finalframe2, aes(x=Month)) +                   
+  geom_line(aes(y=cnty,color="Yellow_Taxi")) +geom_point(aes(y=cnty))+ 
+  geom_line(aes(y=cntg,color="Green_Taxi"))+geom_point(aes(y=cntg))+
+  geom_line(aes(y=cntu,color="Uber"),na.rm=T)+geom_point(aes(y=cntu),na.rm=T)+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Month(04-2014 To 06-2015)",y="Brooklyn_Count")
+  
+  
+#---------------------------------------------------------------Staten_Island-------------
+
+NYC_Taxi_data_Manhattan_mon<-NULL
+NYC_Taxi_data_Manhattan_mon<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+
+for(i in (1:length(NYC_Month_Data$Count)))
+{
+  if(NYC_Month_Data[i,2]=="Staten Island") 
+    {
+      NYC_Taxi_data_Manhattan_mon=rbind(NYC_Taxi_data_Manhattan_mon,NYC_Month_Data[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon<-NYC_Taxi_data_Manhattan_mon[order(NYC_Taxi_data_Manhattan_mon$Month),]
+
+
+
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-10","Staten Island","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-11","Staten Island","u",NA)
+NYC_Taxi_data_Manhattan_mon[nrow(NYC_Taxi_data_Manhattan_mon) + 1, ] <- c( "2014-12","Staten Island","u",NA)
+
+NYC_Taxi_data_Manhattan_mon$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon$Count=as.numeric(NYC_Taxi_data_Manhattan_mon$Count)
+
+#month1 <-format(NYC_Taxi_data_Manhattan_mon$Month, "%m/%Y")
+
+#---yellow---
+
+NYC_Taxi_data_Manhattan_mon_y<-NULL
+NYC_Taxi_data_Manhattan_mon_y<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Staten Island" && NYC_Mon_GY[i,3]=="y") 
+    {
+      NYC_Taxi_data_Manhattan_mon_y=rbind(NYC_Taxi_data_Manhattan_mon_y,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_y<-NYC_Taxi_data_Manhattan_mon_y[order(NYC_Taxi_data_Manhattan_mon_y$Month),]
+
+NYC_Taxi_data_Manhattan_mon_y$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_y$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_y$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_y$Count)
+
+
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+#------green-----
+
+NYC_Taxi_data_Manhattan_mon_g<-NULL
+NYC_Taxi_data_Manhattan_mon_g<-data.frame(month=character(),borough=character(),taxi_type=character(),count=numeric())
+
+for(i in (1:length(NYC_Mon_GY$Count)))
+{
+  if(NYC_Mon_GY[i,2]=="Staten Island" && NYC_Mon_GY[i,3]=="g") 
+    {
+      NYC_Taxi_data_Manhattan_mon_g=rbind(NYC_Taxi_data_Manhattan_mon_g,NYC_Mon_GY[i,])
+    }
+
+}
+
+NYC_Taxi_data_Manhattan_mon_g<-NYC_Taxi_data_Manhattan_mon_g[order(NYC_Taxi_data_Manhattan_mon_g$Month),]
+
+NYC_Taxi_data_Manhattan_mon_g$Month=as.Date(paste(NYC_Taxi_data_Manhattan_mon_g$Month,"-01",sep=""))
+NYC_Taxi_data_Manhattan_mon_g$Count=as.numeric(NYC_Taxi_data_Manhattan_mon_g$Count)
+
+#NYC_Month_Data$Month <- format(NYC_Month_Data$Month, "%m/%Y")
+#NYC_Month_Data$Month <- strptime(x = as.character(NYC_Month_Data$Month),format = "%m/%Y")
+
+
+
+#NYC_Taxi_data_Manhattan_mon$grp <- factor(rep(1:2, c(6,6)))
+#g <- ggplot(NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) + geom_line(aes(group = grp))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))  
+     
+     
+finalframe1<-cbind(NYC_Taxi_data_Manhattan_mon,NYC_Taxi_data_Manhattan_mon_g,NYC_Taxi_data_Manhattan_mon_y)
+
+
+
+finalframe2<-data.frame(finalframe1[,c(1,4,8,12)])
+
+colnames(finalframe2)<-c("Month","cntu","cntg","cnty")
+
+     
+
+#g1 <-ggplot()+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon, aes(x=Month, y=Count,color="Uber")) +
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon$Month,y=NYC_Taxi_data_Manhattan_mon$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_g,aes(x=Month,y=Count,color="Green_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_g$Month,y=NYC_Taxi_data_Manhattan_mon_g$Count))+
+#     geom_line(data=NYC_Taxi_data_Manhattan_mon_y,aes(x=Month,y=Count,color="Yellow_Taxi"))+
+#     geom_point(aes(x=NYC_Taxi_data_Manhattan_mon_y$Month,y=NYC_Taxi_data_Manhattan_mon_y$Count))
+
+
+
+g22<-ggplot(finalframe2, aes(x=Month)) +                   
+  geom_line(aes(y=cnty,color="Yellow_Taxi")) +geom_point(aes(y=cnty))+ 
+  geom_line(aes(y=cntg,color="Green_Taxi"))+geom_point(aes(y=cntg))+
+  geom_line(aes(y=cntu,color="Uber"),na.rm=T)+geom_point(aes(y=cntu),na.rm=T)+
+  scale_colour_manual("",values = c("green", "black","yellow"))+
+  labs(x="Month(04-2014 To 06-2015)",y="Staten_Island")
+  
+#---------------------------------------------------------
+
+
+
+
+
+
+
