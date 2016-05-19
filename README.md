@@ -1,7 +1,7 @@
-Fenil  Tailor (N18730085) 
+Fenil  Tailor 
 Sahil Shah
-Ajinkya Avinash Shukla (N17644394)
- 			                 	Project Proposal Outline
+Ajinkya Avinash Shukla
+ 			              
                                                                                                                                                                                                                                                                            
 Introduction: We are going to analyze the following questions with the help of this project. 
 
