@@ -8,9 +8,17 @@ Introduction: We are going to analyze the following questions with the help of t
 Progression of rise of uber and green taxi in all 5 boroughs of New York City over the period of April 2014 to  June 2015.
 Is there a particular area which is better served with the arrival of Uber and green taxi?
 Do people prefer yellow taxi, green taxi and uber during a particular time of the day? Is there a clear favorite in any of the borough on different hours during the day.
+
+
+
 2) How does the revenue of yellow taxi and green taxi vary for the year 2014 and is there a correlation between the weather and public holidays on the revenue? Do people prefer yellow taxi, uber or green taxi during extreme weathers.
+
+
 3) Which are popular nightlife locations in New York city. At what location do people of new york typically hangout between 9 pm and 2 am in both weekends and weekdays.
-4. Are there any locations in the city where citibikes are as fast as the yellow taxi both uptown and downtown? 
+
+
+
+4) Are there any locations in the city where citibikes are as fast as the yellow taxi both uptown and downtown? 
 
     	Technologies used: Hadoop Streaming with Python
 	Visualization: R, QGIS . 
