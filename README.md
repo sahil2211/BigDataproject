@@ -1,4 +1,4 @@
-Sahil Shah                              Ajinkya Shukla                                                  Fenil Tailor
+Sahil Shah, Ajinkya Shukla and Fenil Tailor
 
  			              
                                                                                                                                                                                                                                                                            
